@@ -1,0 +1,691 @@
+{
+    "inventory": [],
+    "stone_wall_solution": [],
+    "stone_wall_signs": "αβλμπΨΩ",
+    "riddles": 
+    [
+        {
+            "riddle": "Vad kallas en skilsmässa i Göteborg?\n\n1, Päron split\n2, Piggelin\n3, Cornetto",
+            "answer": "1"
+        },
+        {
+            "riddle": "Hur många hyllplan hade bokhyllan i det första rummet?\n\n1, 4\n2, 5\n3, 3",
+            "answer": "1"
+        },
+        {
+            "riddle": "Vilka föremål fanns det i andra rummet?\n\n1, Bokhylla och kista\n2, Klocka, bokhylla och bok\n3, Bok, klocka och låda",
+            "answer": "2"
+        },
+        {
+            "riddle": "Om en svala flyger söderut bärandes på en kokosnöt 50 km/h, hur lång tid skulle det ta för den att nå sydpolen?\n\n1, En vecka\n2, två dagar\n3, En svala kan inte bära på en kokosnöt",
+            "answer": "3"
+        },
+        {
+            "riddle": "Vill du komma in i sista rummet?\n\n1, Nej\n2, Kanske\n3, Ja",
+            "answer": "3"
+        }
+    ],
+    "commands":
+    {
+        "i": "info",
+        "info": "info",
+        "h": "hjälp",
+        "hjälp": "hjälp",
+        "fr": "fram",
+        "fram": "fram",
+        "ba": "bak",
+        "bak": "bak",
+        "se": "se",
+        "l": "ledtråd",
+        "ledtråd": "ledtråd",
+        "c": "cheat",
+        "cheat": "cheat",
+        "o": "objekt",
+        "objekt": "objekt",
+        "t": "titta",
+        "titta": "titta",
+        "ö": "öppna",
+        "öppna": "öppna",
+        "s": "sparka",
+        "sparka": "sparka",
+        "f": "flytta",
+        "flytta": "flytta",
+        "inv": "inventarier",
+        "inventarier": "inventarier",
+        "ta": "ta",
+        "a": "avsluta",
+        "avsluta": "avsluta",
+        "p": "prata",
+        "prata": "prata",
+        "sl": "släpp",
+        "släpp": "släpp",
+        "anv": "använd",
+        "använd": "använd",
+        "spara": "spara",
+        "ladda": "ladda"
+    },
+    "state": 0,
+    "current_room": 0,
+    "rooms": [
+    {
+        "descr": "Jag befinner mig i ett stort och mörkt källarrum utan fönster. \nDet står en stor låda i ena änden av rummet och en stor bokhylla i andra. ",
+        "state": 0,
+        "unlock_msg" : "Jaså, du lyckades lösa första rummet? \nJa ja... Längre än så här kommer du inte! Ha ha ha!",
+        "max_state": 4,
+        "got_items" : ["lykta", "rostig nyckel", "blå nyckel"],
+        "to_see": ["Ett stort mörkt rum, där står en låda med prylar i.",
+            "Bokhyllan innehåller säkert något intressant men jag når inte upp för att se högst upp.",
+            "Jag kan undersöka bokhyllan efter användbara föremål när jag står på lådan.",
+            "Jag kan testa att låsa upp dörren med nyckeln jag hittade.",
+            "Dörren är öppen och jag kan fortsätta till nästa rum!"
+        ],
+        "clues": ["Ett föremål finns säkert gömt i något objekt på marken.",
+            "Jag behöver nog flytta ett föremål.",
+            "Undersöker jag bokhyllan hittar jag säkert något värdefullt.",
+            "Använder jag nyckeln kan jag kanske låsa upp dörren.",
+            "Gå vidare in i nästa rum."
+        ],
+        "objects":
+        {
+            "dörr":
+            {
+                "max_state": 1,
+                "itemstate": 0,
+                "descr": ["En massiv dörr av trä.", "En öppen dörr."],
+                "name": "dörr",
+                "actions": [
+                {
+                    "action": "öppna",
+                    "required_item": "blå nyckel",
+                    "done":
+                    {
+                        "event": "unlock_door",
+                        "msg": "Jag låste upp dörren med den blåa nyckeln!",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "öppna": "Jag har ingen nyckel som passar till dörren."
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den sitter fast i väggen tyvärr."
+                }
+            },
+            "låda":
+            {
+                "max_state": 2,
+                "itemstate": 0,
+                "name": "låda",
+                "descr": [
+                    "Låda fylld med saker.",
+                    "Tom låda på golvet.",
+                    "Tom låda på golvet."
+                ],
+                "actions": [
+                {
+                    "action": "öppna",
+                    "done":
+                    {
+                        "event": "drop_item",
+                        "value": ["rostig nyckel", "lykta"],
+                        "msg": "Jag hittade en rostig nyckel och en lykta i lådan samt massa skräp.\nLådan blev genast mycket lättare när jag slänger ur skräpet,\n nyckeln och lyktan.",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "flytta": "Lådan är för tung för att flyttas."
+                    }
+                },
+                {
+                    "action": "flytta",
+                    "done":
+                    {
+                        "event": "activate",
+                        "value": "bokhylla",
+                        "msg": "Jag flyttar den tomma lådan framför den höga bokhyllan.",
+                        "solve": true
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!"
+                }
+            },
+            "bokhylla":
+            {
+                "max_state": 1,
+                "itemstate": -1,
+                "name": "bokhylla",
+                "inactive_descr": "En stor bokhylla med antika böcker. Den är för hög för att undersöka alla hyllplan.",
+                "descr": ["En bokhylla full med böcker.", "En stor bokhylla med antika böcker."],
+                "actions": [
+                {
+                    "action": "titta",
+                    "done":
+                    {
+                        "event": "drop_item",
+                        "value": ["blå nyckel"],
+                        "msg": "Jag hittade en blå nyckel högst upp på bokhyllan. Den kanske öppnar dörren!\nJag borde plocka upp den."
+                    },
+                    "errormessage":
+                    {
+                        "titta": "Jag kan inte se om det finns något här, rummet är för mörkt."
+                    },
+                    "requires": "lantern_lit"
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            }
+        },
+        "items": [],
+        "objectives":
+        {
+            "lantern_lit": false,
+            "door_unlocked": false,
+            "door_open": false
+        },
+        "graphics": [
+            [" _____________________________________",
+                "|                                     |",
+                "|                               ____  |",
+                "|              ___             ||_|_| |",
+                "|             |   |            |_||_| |",
+                "|     __      |  ,|            ||_/|| |",
+                "|____|XX|_____|___|____________|____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                               __._  |",
+                "|              ___             ||_|_| |",
+                "|             |   |            |_||_| |",
+                "|     __      |  ,|            ||_/|| |",
+                "|____|__|_____|___|____________|____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                               __._  |",
+                "|              ___             ||_|_| |",
+                "|             |   |            |_||_| |",
+                "|             |  ,|         __ ||_/|| |",
+                "|_____________|___|________|__||____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                               ____  |",
+                "|              ___             ||_|_| |",
+                "|             |   |            |_||_| |",
+                "|             |  ,|         __ ||_/|| |",
+                "|_____________|___|________|__||____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                               ____  |",
+                "|          ___ ___             ||_|_| |",
+                "|         |   |///|            |_||_| |",
+                "|         |,  |///|         __ ||_/|| |",
+                "|_________|___|///|________|__||____|_|"
+            ]
+        ]
+    },
+    {
+        "descr": "Jag är i ett trångt rum fyllt med saker. \nDäribland en bokhylla, en klocka, ett bord med en stor bok på och en sliten dörr. ",
+        "state": 0,
+        "unlock_msg" : "Va? Glömde jag låsa dörren? Nej! Du ska inte komma härifrån!",
+        "max_state": 2,
+        "to_see": ["Rummet är fullt av saker, däribland ett bokställ. ", "Dörren är öppen och boken ligger på bänken.", "Dörren är öppen."],
+        "clues": ["Jag borde börja med att försöka öppna dörren.", "Boken går inte att läsa. \nHittar jag någonting som kan hjälpa mig att se borde jag återvända hit.", "Ledtråden är läst och jag borde kunna använda \ninformationen för att ta mig härifrån."],
+        "objects":
+        {
+            "dörr":
+            {
+                "itemstate": 0,
+                "max_state": 1,
+                "descr": ["En massiv dörr av trä. Den ser sliten ut."],
+                "name": "dörr",
+                "actions": [
+                {
+                    "action": "öppna",
+                    "done":
+                    {
+                        "event": "unlock_door",
+                        "msg": "Jag öppnade dörren! Den var olåst!",
+                        "solve": true
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            },
+            "bok":
+            {
+                "itemstate": -1,
+                "max_state": 1,
+                "name": "bok",
+                "descr": ["En bok med gamla tecken skrivna på bladen. En sida står ut av alla.", "En bok med gamla tecken skrivna på bladen. En sida står ut av alla."],
+                "inactive_descr": "En gammal dammig bok, alla blad är tomma.",
+                "actions": [
+                {
+                    "action": "titta",
+                    "done":
+                    {
+                        "event": "read_book",
+                        "required_item": "magisk spegel",
+                        "msg": "Jag tittar på den uppslagna sidan genom den magiska spegeln.\nJag kan se 4 tecken i boken.",
+                        "book": ["              __________ __________              ",
+                                "             |          |          |             ",
+                                "             |          |          |             ",
+                                "             |  {0}   {1}   |   {2}   {3}  |             ",
+                                "             |          |          |             ",
+                                "             |__________|__________|             ",
+                                "                                                 "
+                            ]
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Jag borde inte. Den ser allt för skör ut.",
+                    "flytta": "Den är alltför tung för att kunna flytta på."
+                }
+            },
+            "bokhylla":
+            {
+                "itemstate": 0,
+                "name": "bokhylla",
+                "descr": ["En ranglig bokhylla med några få trasiga böcker."],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            },
+            "klocka":
+            {
+                "itemstate": 0,
+                "name": "klocka",
+                "descr": ["En antik klocka som ser ut att ha slutat fungera för årtionden sedan."],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            }
+        },
+        "items": [],
+        "objectives":
+        {
+            "door_unlocked": true,
+            "door_open": false
+        },
+        "graphics": [
+            [" _____________________________________",
+                "|                                     |",
+                "|  ___                                |",
+                "|  |O|    ___       ___               |",
+                "|  | |   |__||     |   |        _ _   |",
+                "|  |||   ||__|     |,  |      _|=|=|_ |",
+                "|__|_|___|_|||_____|___|______|_____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|  ___                                |",
+                "|  |O|    ___       ___ ___           |",
+                "|  | |   |__||     |///|   |    _ _   |",
+                "|  |||   ||__|     |///|  ,|  _|=|=|_ |",
+                "|__|_|___|_|||_____|///|___|__|_____|_|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|  ___                                |",
+                "|  |O|    ___       ___ ___           |",
+                "|  | |   |__||     |///|   |    _ _   |",
+                "|  |||   ||__|     |///|  ,|  _|=|=|_ |",
+                "|__|_|___|_|||_____|///|___|__|_____|_|"
+            ]
+        ]
+    },
+    {
+        "descr": "Det tredje rummet är ett väldigt litet rum. En liten tunna står i hörnet till höger.",
+        "state": 0,
+        "unlock_msg" : "Okej, jag kanske inte gömde den nyckel så bra. \nMen du kommer aldrig förbi min trogne vakt! Ha ha ha!",
+        "got_items" : ["gul nyckel"],
+        "to_see": ["Jag ser en tunna i hörnet.", "Tunnan är vält och det ligger vatten över golvet.", "Dörren är öppen."
+        ],
+        "clues": ["Kan jag undersöka vad som finns i tunnan kan jag säkert hitta någonting där.",
+            "Jag borde plocka upp nyckeln från marken.", "Dörren är öppen så jag kan fortsätta framåt."
+        ],
+        "objects":
+        {
+            "dörr":
+            {
+                "itemstate": 0,
+                "descr": ["En massiv dörr av trä."],
+                "name": "dörr",
+                "actions": [
+                {
+                    "action": "öppna",
+                    "required_item": "gul nyckel",
+                    "done":
+                    {
+                        "event": "unlock_door",
+                        "msg": "Jag låste upp dörren med den gula nyckeln!",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "öppna": "Jag har ingen nyckel som passar till dörren."
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            },
+            "tunna":
+            {
+                "itemstate": 0,
+                "name": "tunna",
+                "descr": ["En stor rostig tunna av plåt.", "Tunnan ligger på marken med allt vatten utspritt över golvet."],
+                "actions": [
+                {
+                    "action": "sparka",
+                    "done":
+                    {
+                        "event": "drop_item",
+                        "value": ["gul nyckel"],
+                        "msg": "Jag sparkar på tunnan och den välter över.\nFlera liter vatten väller ut och täcker golvet i rummet.\nJag får syn på en gul nyckel i vattenpölen.",
+                        "solve": true
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            }
+        },
+        "items": [],
+        "objectives":
+        {
+            "door_unlocked": false,
+            "door_open": false
+        },
+        "graphics": [
+            [" ___________________________",
+                "|                           |",
+                "|                           |",
+                "|            ___            |",
+                "|           |   |      __   |",
+                "|           |  ,|     |  |  |",
+                "|___________|___|_____|__|__|"
+            ],
+            [" ___________________________",
+                "|                           |",
+                "|                           |",
+                "|            ___            |",
+                "|           |   |           |",
+                "|           |  ,|   ____    |",
+                "|_______----|---|--|----|---|"
+            ],
+            [" ___________________________",
+                "|                           |",
+                "|                           |",
+                "|        ___ ___            |",
+                "|       |   |///|           |",
+                "|       |,  |///|   ____    |",
+                "|_______|   |///|--|----|---|"
+            ]
+        ]
+    },
+    {
+        "descr": "Jag kommer in i det fjärde rummet och möts av ett troll bredvid dörren.",
+        "state": 0,
+        "unlock_msg" : "Nej! Åh, du är ganska slug du! Men du kommer aldrig att lösa mitt sista rum!",
+        "got_items" : ["röd nyckel", "magisk spegel"],
+        "to_see": ["Kistan är gammal och rostig.\n Trollet stirrar ointresserat in i väggen.", "Kistan är öppen och trollet sneglar på mig.", "Trollet ler och pekar på dörren bakom sig.", "Dörren är öppen."],
+        "clues": ["Jag borde leta efter en nyckel som passar till den rostiga kistan.", "Jag kan undersöka vad trollet vill.", "Jag kan låsa upp dörren med nyckeln nu.","Jag borde fortsätta till nästa rum"],
+        "objects":
+        {
+            "dörr":
+            {
+                "itemstate": 0,
+                "descr": ["En massiv dörr av trä."],
+                "name": "dörr",
+                "actions": [
+                {
+                    "action": "öppna",
+                    "required_item": "röd nyckel",
+                    "done":
+                    {
+                        "event": "unlock_door",
+                        "msg": "Jag låste upp dörren med den röda nyckeln!",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "öppna": "Jag har ingen nyckel som passar till dörren."
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            },
+            "kista":
+            {
+                "itemstate": 0,
+                "name": "kista",
+                "descr": ["En stor kista med ett rostigt lås.", "Den stora kistan är öppen."],
+                "actions": [
+                {
+                    "action": "öppna",
+                    "done":
+                    {
+                        "event": "open_chest",
+                        "required_item": "rostig nyckel",
+                        "value": ["magisk spegel"],
+                        "msg": "Jag öppnar skattkistan och jag finner en magisk spegel som skiner en svagt blå färg.",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "öppna": "Jag har ingen nyckel som passar till kistans lås."
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            },
+            "troll":
+            {
+                "itemstate": 0,
+                "name": "troll",
+                "descr": ["Ett troll som står bredvid dörren. Han fnissar när jag tittar på honom.", "Trollet ler och visar mig vägen ut."],
+                "inactive_descr": "Ett troll som står bredvid dörren. Han försöker undvika min blick.",
+                "actions": [
+                {
+                    "action": "prata",
+                    "required_item": "magisk spegel",
+                    "done":
+                    {
+                        "event": "riddle",
+                        "value": "röd nyckel",
+                        "msg": "Jag går fram mot trollet.",
+                        "solve": true
+                    },
+                    "errormessage":
+                    {
+                        "prata": "Trollet visslar och stirrar upp i taket.\nDen verkar inte intresserad av att prata."
+                    }
+                },
+                {
+                    "action": "prata",
+                    "done":
+                    {
+                        "event": "dummy",
+                        "msg": "Troll: Hej!\nHar du den magiska spegeln med dig när du kollar på \nboken i det andra rummet kan du hitta lösningen på stenväggens mysterium.",
+                        "required_item": "dummy"
+                    }
+                }],
+                "errormessage":
+                {
+                    "sparka": "Jag borde inte sparka trollet. Han ser riktigt otäck ut.",
+                    "flytta": "Trollet tittar på mig med en sur blick. Jag låter bli."
+                }
+            }
+        },
+        "items": [],
+        "objectives":
+        {
+            "watched_bookshelf": false,
+            "door_unlocked": false,
+            "door_open": false
+        },
+        "graphics": [
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|              ___                    |",
+                "|             |   | (--)     ___      |",
+                "|             |  ,|-(__)-   |_,_|     |",
+                "|_____________|___|__UU_____|___|_____|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|              ___                    |",
+                "|             |   | (--)     ___      |",
+                "|             |  ,|-(__)-   |///|     |",
+                "|_____________|___|__UU_____|___|_____|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|              ___                    |",
+                "|             |   | (^^)     ___      |",
+                "|             |  ,|-(__)-   |///|     |",
+                "|_____________|___|__UU_____|___|_____|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|          ___ ___                    |",
+                "|         |   |///| (^^)     ___      |",
+                "|         |,  |///|-(__)-   |///|     |",
+                "|_________|   |///|__UU_____|___|_____|"
+            ]
+        ]
+    },
+    {
+        "descr": "Det femte rummet är tomt förutom en gigantisk stenvägg som har 4 cirklar inristat på mitten.",
+        "state": 0,
+        "unlock_msg" : "Är du ute?! Hur är det end möjligt?! Du ska få igen för det här!",
+        "to_see": ["Den stora stenväggen verkar ha en låsmekanism.", "Jag kan undersöka bokhyllan efter användbara föremål om jag står på lådan."],
+        "clues": ["Om jag kan lista ut pusslet på väggen\n kommer kanske väggen att låsas upp på något sätt.", "Jag kan gå framåt och gå ut ur den här källaren!"],
+        "objects":
+        {
+            "stenvägg":
+            {
+                "itemstate": 0,
+                "name": "stenvägg",
+                "descr": ["En stor stenvägg med 4 cirklar inristade.", "Stenväggen har flyttat på sig och jag kan gå ut!"],
+                "actions": [
+                {
+                    "action": "titta",
+                    "done":
+                    {
+                        "event": "solve",
+                        "msg": "Cirklarna på väggen är lika många som de tecken som fanns i boken.\nOm jag rör tecknet visas ett nytt tecken i cirkeln!",
+                        "wall": ["              _____________________              ",
+                            "             |                     |             ",
+                            "             |                     |             ",
+                            "             |    {0}   {1}   {2}   {3}    |             ",
+                            "             |                     |             ",
+                            "             |_____________________|             ",
+                            "                                                 "
+                        ],"cinematic": [
+                            [" _____________________________________",
+                                "|                                     |",
+                                "|                                     |",
+                                "|           ______________            |",
+                                "|          |              |           |",
+                                "|          |  {0}  {1}  {2}  {3}  |           |",
+                                "|__________|______________|___________|"
+                            ],
+                            [" _____________________________________",
+                                "|                                     |",
+                                "|                                     |",
+                                "|           ______________            |",
+                                "|          |//////////////|           |",
+                                "|          |              |           |",
+                                "|__________|  {0}  {1}  {2}  {3}  |___________|"
+                            ],
+                            [" _____________________________________",
+                                "|                                     |",
+                                "|                                     |",
+                                "|           ______________            |",
+                                "|          |//////////////|           |",
+                                "|          |//////////////|           |",
+                                "|__________|              |___________|"
+                            ],
+                            [" _____________________________________",
+                                "|                                     |",
+                                "|                                     |",
+                                "|           ______________            |",
+                                "|          |//////////////|           |",
+                                "|          |//////////////|           |",
+                                "|__________|//////////////|___________|"
+                            ]
+                        ]
+                    },
+                    "errormessage":
+                    {
+                        "titta": "Jag vet inte vad jag ska göra med väggen."
+                    },
+                    "requires": "book_read"
+                }],
+                "errormessage":
+                {
+                    "sparka": "Aj! Min fot!",
+                    "flytta": "Den rörde sig inte en millimeter."
+                }
+            }
+        },
+        "items": [],
+        "objectives":
+        {
+            "door_unlocked": false,
+            "door_open": false,
+            "book_read": false
+        },
+        "graphics": [
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|           ______________            |",
+                "|          |              |           |",
+                "|          |  0  0  0  0  |           |",
+                "|__________|______________|___________|"
+            ],
+            [" _____________________________________",
+                "|                                     |",
+                "|                                     |",
+                "|           ______________            |",
+                "|          |//////////////|           |",
+                "|          |//////////////|           |",
+                "|__________|//////////////|___________|"
+            ]
+        ]
+    }]
+}

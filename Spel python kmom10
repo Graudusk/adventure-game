@@ -1,0 +1,89 @@
+Spel python kmom10
+
+
+Att göra:
+
+skissa upp nivåerna och rummen:
+
+    koncept:
+        instängd i en slottkällare av en vålnad. Vålnaden hånar och skrattar maniskt under spelets gång.
+        blir irriterad när man går vidare i spelet osv..
+        nycklar finns gömda i varje rum.
+
+    inledningstext:
+        blablabla
+
+    fem rum
+
+        rum ett:
+            måste tömma en låda på saker(hittar rostig nyckel till kista i rum tre och en lykta), ställa lådan framför en bokhylla och ta nyckeln från toppen av bokhyllan (som bara kan ses med lyktan)
+
+        rum två:
+            rum fullt med saker, inget behöver göras, dörren är öppen
+            innehåller ett bokställ med en bok med tomma sidor (kan läsas med magisk handspegel och lykta och visar tre olika tecken i en viss följd)
+
+        rum tre:
+            tunna med vatten (och nyckel i), måste sparka på tunnan så den välter och nyckeln ramlar ut
+
+        rum fyra:
+            ett litet troll står framför dörren och ställer en gåta (om man kan bokens hemlighet) för att man ska få nyckeln. fem olika gåtor ska finnas, slumpa fram en som ställs för varje spelomgång. (ska man sparka trollet?)
+            skattkista står i mitten av rummet(öppnas med rostig nyckel från rum ett, innehåller magisk handspegel)
+
+        rum fem:
+            ordspel (kan bara lösas om man har läst boken) (du ska sätta tre tecken i en viss ordning och dra i en spak för att öppna sista dörren och komma ut, slumpa fram ordningen på tecknena så det är olika varje spelomgång)
+
+skapa JSON-fil för hantering av data:
+    ett jsonobjekt för varje rum som innehåller datan.
+    innehåller i sin tur ett jsonobjekt för varje föremål som finns i rummet.
+    det korrekta kommandot för föremålets lösning för att avancera ska finnas i objektet och eventuella krav på utförda handlingar ska finnas med
+
+    ett jsonobjekt som inehåller alla handlingar som ska utföras ska sparas som sant/falskt-parametrar som senare kan frågas om 
+
+
+***skapa utseende för varje rum i ASCII
+
+
+***skapa kommandohanterare för kommandon:
+    
+    -h, --help  Skriver ut en beskrivning av programmet och vilka parameterar som fungerar.
+    -i, --info  Skriver ut en beskrivning av spelet och spelets idé.
+    -v, --version   Skriver ut versionen av spelet.
+    -a, --about     Skriver ut en kort beskrivning av dig själv, du som gjort spelet.
+    -c, --cheat     Skriver ut minsta möjliga väg för att klara spelet.
+
+    Skriv text för varje kommando
+
+****skapa kommandohanterare för spelet i applikationen som hanterar rummen:
+    
+    i, info     Skriver ut beskrivningen av rummet, samma som visas när man kommer in i rummet.
+    h, hjälp    Skriver ut en lista av de kommandon som du kan göra.
+    fr, fram    Gå framåt till nästa rum, om det är upplåst.
+    ba, bak     Gå bakåt till föregående rum.
+    se          Titta dig runt omkring - spelet svarar med om det finns något särskilt att se i rummet.
+    l, ledtråd  Ge en ledtråd, eller fler om det finns, en ledtråd för varje gång man skriver kommandot.
+    c, cheat    Utför automatiskt alla handlingar som krävs för att klara rummet användaren står i.
+
+****skapa kommandohanterare för spelet i appen som hanterar objekten:
+
+    o, objekt   Skriver ut vilka objekt som finns i rummet.
+    t [objekt], titta [objekt]  Skriver ut beskrivningen av objektet.
+    ö [objekt], öppna [objekt]  Öppna objektet om det går att öppna.
+    s [objekt], sparka [objekt]     Sparka på objektet så det går sönder, om det kan gå sönder.
+    f [objekt] ([plats]), flytta [objekt] ([plats])     Flytta på objektet så det hamnar på en annan plats, om det går att flytta.
+
+****skriv klart rumbeskrivning för alla rum och statess
+
+****skriv klart alla clues per rum per state
+
+****skriv klart alla obejktsbeskrivningar för varje itemstate
+
+**skriv klart gåtorna
+
+****gör klart pusselspelet för väggen
+
+****gör klart cheat
+
+gör spara till jsonfil
+    ***spara
+    ***ladda
+    ladda sista state
